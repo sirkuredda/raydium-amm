@@ -1,5 +1,6 @@
 //! Error types
 
+use codama::CodamaErrors;
 use num_derive::FromPrimitive;
 use solana_program::{
     decode_error::DecodeError,
@@ -9,7 +10,7 @@ use solana_program::{
 use thiserror::Error;
 
 /// Errors that may be returned by the TokenAmm program.
-#[derive(Clone, Debug, Eq, Error, FromPrimitive, PartialEq)]
+#[derive(Clone, Debug, Eq, Error, FromPrimitive, PartialEq, CodamaErrors)]
 pub enum AmmError {
     // 0
     /// The account cannot be initialized because it is already being used.

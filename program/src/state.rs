@@ -11,6 +11,7 @@ use solana_program::{
 
 use arrayref::{array_mut_ref, array_ref, array_refs, mut_array_refs};
 use bytemuck::{from_bytes, from_bytes_mut, Pod, Zeroable};
+use codama::{CodamaAccount, CodamaType};
 use safe_transmute::{self, trivial::TriviallyTransmutable};
 use serde::{Deserialize, Serialize};
 use std::{
@@ -67,7 +68,7 @@ macro_rules! impl_loadable {
 }
 #[cfg_attr(feature = "client", derive(Debug))]
 #[repr(C, packed)]
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy, Default, CodamaType)]
 pub struct TargetOrder {
     pub price: u64,
     pub vol: u64,
@@ -471,7 +472,7 @@ fn validate_fraction(numerator: u64, denominator: u64) -> Result<(), AmmError> {
 }
 
 #[repr(C, packed)]
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, CodamaType)]
 pub struct Fees {
     /// numerator of the min_separate
     pub min_separate_numerator: u64,
@@ -581,7 +582,7 @@ impl Pack for Fees {
 }
 
 #[repr(C, packed)]
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, CodamaType)]
 pub struct StateData {
     /// delay to take pnl coin
     pub need_take_pnl_coin: u64,
@@ -635,7 +636,7 @@ impl StateData {
 
 #[cfg_attr(feature = "client", derive(Debug))]
 #[repr(C, packed)]
-#[derive(Clone, Copy, Default, PartialEq)]
+#[derive(Clone, Copy, Default, PartialEq, CodamaAccount)]
 pub struct AmmInfo {
     /// Initialized status.
     pub status: u64,
@@ -856,7 +857,7 @@ impl AmmInfo {
 
 /// State of amm config account
 #[repr(C, packed)]
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, CodamaAccount)]
 pub struct AmmConfig {
     /// withdraw pnl owner
     pub pnl_owner: Pubkey,
